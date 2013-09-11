@@ -2,6 +2,7 @@ parameters:
 #    app_app.example.class: App\AppBundle\Example
 
 services:
-#    app_app.example:
-#        class: %app_app.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+   app_app_directory_namer:
+        class: App\AppBundle\Services\DirectoryNamer\DirectoryNamer
+        arguments: [@security.context, $user_id]
+        scope: request

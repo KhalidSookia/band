@@ -1,0 +1,9 @@
+parameters:
+#    app_user.example.class: App\UserBundle\Example
+
+services:
+    acme_user.registration.form.type:
+        class: App\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: app_user_registration }

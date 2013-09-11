@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Music!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/foundation.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/normalize.css') }}" type="text/css" />
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <!-- Header  -->
+        <nav class="top-bar">
+            <ul class="title-area">
+            <!-- Title Area -->
+                <li class="name">
+                    <h1><a href="{{ path('app_user_homepage') }}">Band Name </a></h1>
+                </li>
+            </ul>
+            {% block menu %}
+                
+            {% endblock %}
+        </nav>
+
+        <!-- End Header  -->
+        <!-- Main Feed -->
+        <div class="row">
+            <div class="small-11 small-centered columns">
+                {% block body %}
+               
+                {% endblock %}
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="row">
+            <div class="small-11 small-centered columns">
+                <hr>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    Connecté en tant que {{ app.user.username }} - <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('fos_user_security_login') }}">Connexion</a> - - <a href="{{ path('fos_user_registration_register') }}">S'enregistrer</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <footer>
+        <hr />
+        <div class="row">
+            <div class="large-12 large-centered columns">
+                <p>&copy; Copyright</p>
+        </footer>
+        {% block javascripts %}
+            <script src="{{ asset('js/foundation.min.js') }}" type="text/javascript" async defer></script>
+        {% endblock %}
+    </body>
+</html>

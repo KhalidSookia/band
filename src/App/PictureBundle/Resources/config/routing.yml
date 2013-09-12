@@ -1,0 +1,58 @@
+# Collection routes
+collection:
+    pattern:  /collection
+    defaults: { _controller: AppPictureBundle:Collection:index }
+
+collection_new:
+    pattern:  /collection/new
+    defaults: { _controller: AppPictureBundle:Collection:new }
+
+collection_create:
+    pattern:  /collection/create
+    defaults: { _controller: AppPictureBundle:Collection:create }
+
+collection_show:
+    pattern:  /collection/{id}
+    defaults: { _controller: AppPictureBundle:Collection:show }
+
+collection_delete:
+    pattern:  /collection/delete/{id}
+    defaults: { _controller: AppPictureBundle:Collection:delete }
+
+collection_edit:
+    pattern:  /collection/{id}/edit
+    defaults: { _controller: AppPictureBundle:Collection:edit }
+
+collection_update:
+    pattern:  /collection/{id}
+    defaults: { _controller: AppPictureBundle:Collection:update }
+
+
+# Picture routes
+picture:
+    pattern:  /picture
+    defaults: { _controller: AppPictureBundle:Picture:index }
+
+picture_new:
+    pattern:  /picture/new
+    defaults: { _controller: AppPictureBundle:Picture:new }
+
+picture_create:
+    pattern:  /picture/create
+    defaults: { _controller: AppPictureBundle:Picture:create }
+
+picture_show:
+    pattern:  /picture/{id}
+    defaults: { _controller: AppPictureBundle:Picture:show }
+
+picture_delete:
+    pattern:  /picture/delete/{id}
+    defaults: { _controller: AppPictureBundle:Picture:delete }
+
+picture_edit:
+    pattern:  /picture/{id}/edit
+    defaults: { _controller: AppPictureBundle:Picture:edit }
+
+picture_update:
+    pattern:  /picture/{id}
+    defaults: { _controller: AppPictureBundle:Picture:update }

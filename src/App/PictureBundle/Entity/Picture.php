@@ -3,23 +3,19 @@
 namespace App\PictureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\AppBundle\Services\FileUpload\FileUpload;
-use App\AppBundle\Services\Directory\Directory;
-use Gedmo\Mapping\Annotation as Gedmo;
+use App\UploadBundle\Entity\Upload;
 
 /**
  * Picture
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\PictureBundle\Entity\PictureRepository")
  *
- * @Gedmo\Uploadable(pathMethod="getPath", callback="myCallbackMethod", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
 */
 
-class Picture extends FileUpload
+class Picture extends Upload
 {
     public function __construct(){
-        $date = new \DateTime();
-        $this->uniqid = $date->format('Ymdhis');
+        
     }
     /**
      * @var integer
@@ -31,25 +27,9 @@ class Picture extends FileUpload
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="extension", type="string", length=255)
-     */
-    private $extension;
-
-    /**
-    * @Gedmo\Slug(fields={"name"})
-    * @ORM\Column(length=128, unique=true)
+    * @ORM\ManyToOne(targetEntity="App\PictureBundle\Entity\Collection", cascade={"persist"})
     */
-    private $slug;
-
+    private $collection;
 
     /**
      * Get id
@@ -62,94 +42,25 @@ class Picture extends FileUpload
     }
 
     /**
-     * Set uniqid
+     * Set collection
      *
-     * @param string $uniqid
+     * @param \App\PictureBundle\Entity\Collection $collection
      * @return Picture
      */
-    public function setUniqid($uniqid)
+    public function setCollection(\App\PictureBundle\Entity\Collection $collection = null)
     {
-        $this->uniqid = $uniqid;
+        $this->collection = $collection;
     
         return $this;
     }
 
     /**
-     * Get uniqid
+     * Get collection
      *
-     * @return string 
+     * @return \App\PictureBundle\Entity\Collection 
      */
-    public function getUniqid()
+    public function getCollection()
     {
-        return $this->uniqid;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Picture
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     * @return Picture
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
-    
-        return $this;
-    }
-
-    /**
-     * Get extension
-     *
-     * @return string 
-     */
-    public function getExtension()
-    {
-        return $this->extension;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Picture
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
+        return $this->collection;
     }
 }

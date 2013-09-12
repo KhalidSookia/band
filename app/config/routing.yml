@@ -1,3 +1,7 @@
+app_upload:
+    resource: "@AppUploadBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app_picture:
     resource: "@AppPictureBundle/Resources/config/routing.yml"
     prefix:   /

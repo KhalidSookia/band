@@ -7,7 +7,7 @@ use App\AppBundle\Services\Directory\Directory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @Gedmo\Uploadable(pathMethod="getPath")
+ * @Gedmo\Uploadable(pathMethod="getPath", callback="myCallbackMethod", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
 */
 
 class FileUpload

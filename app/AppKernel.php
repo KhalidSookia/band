@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new App\PictureBundle\AppPictureBundle(),
             new
 Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new App\UploadBundle\AppUploadBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

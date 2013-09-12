@@ -7,20 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\PictureBundle\Entity\Picture;
-use App\PictureBundle\Form\PictureType;
+use App\PictureBundle\Entity\Collection;
+use App\PictureBundle\Form\CollectionType;
 
 /**
- * Picture controller.
- * @Route("/picture")
+ * Collection controller.
+ *
+ * @Route("/collection")
  */
-class PictureController extends Controller
+class CollectionController extends Controller
 {
 
     /**
-     * Lists all Picture entities.
+     * Lists all Collection entities.
      *
-     * @Route("/", name="picture")
+     * @Route("/", name="collection")
      * @Method("GET")
      * @Template()
      */
@@ -35,15 +36,16 @@ class PictureController extends Controller
         );
     }
     /**
-     * Creates a new Picture entity.
+     * Creates a new Collection entity.
      *
-     * @Route("/create", name="picture_create")
+     * @Route("/create", name="collection_create")
      * @Method("POST")
-     * @Template("AppPictureBundle:Picture:new.html.twig")
+     * @Template("AppPictureBundle:Collection:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Picture();
+        $entity = new Collection();
+        $entity->setUser($this->getUser());
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -52,7 +54,7 @@ class PictureController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('picture_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('collection_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -62,34 +64,36 @@ class PictureController extends Controller
     }
 
     /**
-    * Creates a form to create a Picture entity.
+    * Creates a form to create a Collection entity.
     *
-    * @param Picture $entity The entity
+    * @param Collection $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Picture $entity)
+    private function createCreateForm(Collection $entity)
     {
-        $form = $this->createForm(new PictureType(), $entity, array(
-            'action' => $this->generateUrl('picture_create'),
+        $form = $this->createForm(new CollectionType(), $entity, array(
+            'action' => $this->generateUrl('collection_create'),
             'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->remove('createdAt')
+            ->remove('user');
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new Picture entity.
+     * Displays a form to create a new Collection entity.
      *
-     * @Route("/new", name="picture_new")
+     * @Route("/new", name="collection_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Picture();
+        $entity = new Collection();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -99,9 +103,9 @@ class PictureController extends Controller
     }
 
     /**
-     * Finds and displays a Picture entity.
+     * Finds and displays a Collection entity.
      *
-     * @Route("/{id}", name="picture_show")
+     * @Route("/{id}", name="collection_show")
      * @Method("GET")
      * @Template()
      */
@@ -109,11 +113,10 @@ class PictureController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppPictureBundle:Picture')->find($id);
-        var_dump($entity);
+        $entity = $em->getRepository('AppPictureBundle:Collection')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Picture entity.');
+            throw $this->createNotFoundException('Unable to find Collection entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +128,9 @@ class PictureController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Picture entity.
+     * Displays a form to edit an existing Collection entity.
      *
-     * @Route("/{id}/edit", name="picture_edit")
+     * @Route("/{id}/edit", name="collection_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +138,10 @@ class PictureController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppPictureBundle:Picture')->find($id);
+        $entity = $em->getRepository('AppPictureBundle:Collection')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Picture entity.');
+            throw $this->createNotFoundException('Unable to find Collection entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,16 +155,16 @@ class PictureController extends Controller
     }
 
     /**
-    * Creates a form to edit a Picture entity.
+    * Creates a form to edit a Collection entity.
     *
-    * @param Picture $entity The entity
+    * @param Collection $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Picture $entity)
+    private function createEditForm(Collection $entity)
     {
-        $form = $this->createForm(new PictureType(), $entity, array(
-            'action' => $this->generateUrl('picture_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CollectionType(), $entity, array(
+            'action' => $this->generateUrl('collection_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -170,20 +173,20 @@ class PictureController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Picture entity.
+     * Edits an existing Collection entity.
      *
-     * @Route("/{id}", name="picture_update")
+     * @Route("/{id}", name="collection_update")
      * @Method("PUT")
-     * @Template("AppPictureBundle:Picture:edit.html.twig")
+     * @Template("AppPictureBundle:Collection:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppPictureBundle:Picture')->find($id);
+        $entity = $em->getRepository('AppPictureBundle:Collection')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Picture entity.');
+            throw $this->createNotFoundException('Unable to find Collection entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -193,7 +196,7 @@ class PictureController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('picture_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('collection_edit', array('id' => $id)));
         }
 
         return array(
@@ -203,9 +206,9 @@ class PictureController extends Controller
         );
     }
     /**
-     * Deletes a Picture entity.
+     * Deletes a Collection entity.
      *
-     * @Route("/delete/{id}", name="picture_delete")
+     * @Route("/delete/{id}", name="collection_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -215,21 +218,21 @@ class PictureController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppPictureBundle:Picture')->find($id);
+            $entity = $em->getRepository('AppPictureBundle:Collection')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Picture entity.');
+                throw $this->createNotFoundException('Unable to find Collection entity.');
             }
-
+var_dump($em);
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('picture'));
+        return $this->redirect($this->generateUrl('collection'));
     }
 
     /**
-     * Creates a form to delete a Picture entity by id.
+     * Creates a form to delete a Collection entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -238,7 +241,7 @@ class PictureController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('picture_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('collection_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

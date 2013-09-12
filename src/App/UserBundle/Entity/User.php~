@@ -14,7 +14,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
 class User extends BaseUser
 {
     public function __construct(){
-        $this->created_at = new \Datetime;
+        $this->creation_date = new \Datetime;
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         // $this->enabled = false;
         $this->locked = false;

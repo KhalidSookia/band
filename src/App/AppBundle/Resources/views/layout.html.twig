@@ -1,4 +1,5 @@
 {% extends "::layout.html.twig" %}
+
 {% block menu %}
 <section class="top-bar-section">
 <!-- Left Nav Section -->
@@ -18,4 +19,8 @@
     <li class="divider"></li>
 </ul>
 </section>
+{% endblock %}
+{% block sidebar %}
+<li class=""><a href="{{ path('collection') }}">Picture Collection</a></li>
+<li class="divider"></li>
 {% endblock %}

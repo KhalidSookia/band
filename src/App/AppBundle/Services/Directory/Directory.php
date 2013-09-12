@@ -7,9 +7,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Directory{
 
-
-
-
     public function __construct(){
         $filesystem = new Filesystem();
         $folder = $this->getUserRootDir();

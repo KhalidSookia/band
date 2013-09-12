@@ -1,0 +1,62 @@
+<?php
+
+namespace App\UploadBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use App\AppBundle\Services\Directory\Directory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ * Upload
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\UploadBundle\Entity\UploadRepository")
+ *
+ * @Gedmo\Uploadable(pathMethod="getUserRootDir", callback="myCallbackMethod", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
+ */
+class Upload extends Directory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="original_name", type="string", length=255)
+     */
+    private $originalName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="extension", type="string", length=255)
+     */
+    private $extension;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+
+    /**
+     * @ORM\Column(name="path", type="string")
+     * @Gedmo\UploadableFilePath
+     */
+    private $path;
+
+    /**
+     * @ORM\Column(name="mime_type", type="string")
+     * @Gedmo\UploadableFileMimeType
+     */
+    private $mimeType;
+}

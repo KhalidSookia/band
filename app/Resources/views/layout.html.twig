@@ -18,22 +18,30 @@
                     <h1><a href="{{ path('app_user_homepage') }}">Band Name </a></h1>
                 </li>
             </ul>
+
             {% block menu %}
                 
             {% endblock %}
         </nav>
 
         <!-- End Header  -->
+        <div class="row" >
+            <div class="large-2 columns">
+                <ul class="side-nav">
+                  {% block sidebar %}
+                      
+                  {% endblock %}
+                </ul>
+            </div>
         <!-- Main Feed -->
-        <div class="row">
-            <div class="small-11 small-centered columns">
+            <div class="large-10 columns">
                 {% block body %}
                
                 {% endblock %}
             </div>
         </div>
         <!-- Footer -->
-        <div class="row">
+        <div class="row" >
             <div class="small-11 small-centered columns">
                 <hr>
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}

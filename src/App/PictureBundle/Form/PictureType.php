@@ -15,11 +15,7 @@ class PictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('originalName')
-            ->add('extension')
-            ->add('slug')
-            ->add('path')
-            ->add('mimeType')
+            ->add('file')
             ->add('collection', 'entity', array(
                 'class' => 'AppPictureBundle:Collection',
                 'property' => 'name'

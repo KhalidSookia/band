@@ -5,6 +5,7 @@ namespace App\UploadBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\AppBundle\Services\Directory\Directory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -13,10 +14,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\UploadBundle\Entity\UploadRepository")
  *
- * @Gedmo\Uploadable(pathMethod="getUserRootDir", callback="myCallbackMethod", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @Gedmo\Uploadable(pathMethod="getUserRootDir", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
  */
 class Upload extends Directory
 {
+    public function __construct(){
+        $this->originalName = $this->file->getClientOriginalName();
+        $this->extension = $this->file->guessExtension();
+        $this->path = getUserRootDir();
+    }
     /**
      * @var integer
      *
@@ -41,9 +49,9 @@ class Upload extends Directory
     private $extension;
 
     /**
-     * @var string
+     * @Gedmo\slug(fields={"originalName"})
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(length=128, unique=true)
      */
     private $slug;
 
@@ -55,8 +63,130 @@ class Upload extends Directory
     private $path;
 
     /**
-     * @ORM\Column(name="mime_type", type="string")
-     * @Gedmo\UploadableFileMimeType
+     * @Assert\File(maxSize="6000000")
      */
-    private $mimeType;
+    private $file;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set originalName
+     *
+     * @param string $originalName
+     * @return Upload
+     */
+    public function setOriginalName($originalName)
+    {
+        $this->originalName = $originalName;
+    
+        return $this;
+    }
+
+    /**
+     * Get originalName
+     *
+     * @return string 
+     */
+    public function getOriginalName()
+    {
+        return $this->originalName;
+    }
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     * @return Upload
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    
+        return $this;
+    }
+
+    /**
+     * Get extension
+     *
+     * @return string 
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Upload
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Upload
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
 }

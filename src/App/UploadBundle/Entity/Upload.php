@@ -5,6 +5,7 @@ namespace App\UploadBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\AppBundle\Services\Directory\Directory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -43,9 +44,9 @@ class Upload extends Directory
     private $extension;
 
     /**
-     * @var string
+     * @Gedmo\slug(fields={"originalName"})
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(length=128, unique=true)
      */
     private $slug;
 
@@ -57,10 +58,10 @@ class Upload extends Directory
     private $path;
 
     /**
-     * @ORM\Column(name="mime_type", type="string")
-     * @Gedmo\UploadableFileMimeType
+     * @Assert\File(maxSize="60000000")
      */
-    private $mimeType;
+    private $file;
+
 
     /**
      * Get id
@@ -119,29 +120,6 @@ class Upload extends Directory
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Upload
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Set path
      *
      * @param string $path
@@ -165,27 +143,98 @@ class Upload extends Directory
     }
 
     /**
-     * Set mimeType
+     * Set slug
      *
-     * @param string $mimeType
+     * @param string $slug
      * @return Upload
      */
-    public function setMimeType($mimeType)
+    public function setSlug($slug)
     {
-        $this->mimeType = $mimeType;
+        $this->slug = $slug;
     
         return $this;
     }
 
     /**
-     * Get mimeType
+     * Get slug
      *
      * @return string 
      */
-    public function getMimeType()
+    public function getSlug()
     {
-        return $this->mimeType;
+        return $this->slug;
     }
 
-    // ---------My Functions-------------------
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        if(isset($this->path)){
+            $this->tempFileName = $this->path;
+
+            $this->path = null;
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    // My functions
+
+    /**
+    * @ORM\PrePersist()
+    * @ORM\PreUpdate()
+    */
+
+    public function preUpload(){
+        if(null === $this->file){
+            return;
+        }else{
+            $this->extension = $this->file->guessExtension();
+            $this->originalName = $this->file->getClientOriginalName();
+            $this->path = $this->getUserRootDir();
+
+        }
+    }
+
+    public function upload(){
+        if(null === $this->file){
+            return;
+        }
+        if(null !== $this->tempFileName){
+            $oldFile = $this->getUploadRootDir().'/'.$this->id.'.'.$this->tempFileName;
+            if(file_exists($oldFile)){
+                unlink($oldFile);
+            }
+        }
+        $this->file->move($getUserRootDir(), $this->id.'.'.$this->extension);
+    }
+
+    /**
+    * @ORM\PreRemove()
+    */
+    public function preRemoveUpload(){
+        $this->tempFileName = $this->getUploadRootDir().'/'.$this->id.'.'.$this->extension;
+    }
+
+    /**
+    * @ORM\PostRemove()
+    */
+    public function removeUpload(){
+        if(file_exists($this->tempFileName)){
+            unlink($this->tempFileName);
+        }
+    }
 }

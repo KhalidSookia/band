@@ -27,9 +27,14 @@ class PictureController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $collection = $em->getRepository('AppPictureBundle:Collection')->findByUser($user);
 
-        $entities = $em->getRepository('AppPictureBundle:Collection')->findAll();
-
+        if(null == $collection){
+            return $this->redirect($this->generateUrl('collection'));
+        }else{
+            $entities = $em->getRepository('AppPictureBundle:Picture')->findByCollection($collection);
+        }
         return array(
             'entities' => $entities,
         );
@@ -75,7 +80,9 @@ class PictureController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create'))->add('collection', 'entity', array(
+                'class' => 'AppPictureBundle:Collection',
+                'property' => 'name'));
 
         return $form;
     }

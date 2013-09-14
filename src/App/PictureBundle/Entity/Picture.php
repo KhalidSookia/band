@@ -18,28 +18,9 @@ class Picture extends Upload
         
     }
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
     * @ORM\ManyToOne(targetEntity="App\PictureBundle\Entity\Collection", cascade={"persist"})
     */
     private $collection;
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set collection

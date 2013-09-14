@@ -6,8 +6,14 @@ use App\UserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Directory{
+    
+    private $userId;
+    protected $context;
 
-    public function __construct(){
+    public function __construct($context){
+
+        $this->context = $context;
+
         $filesystem = new Filesystem();
         $folder = $this->getUserRootDir();
 
@@ -25,7 +31,7 @@ class Directory{
      */
     public function getUserId()
     {
-        return $this->context->getToken()->getUser()->getId();
+        return $this->context->getUser();
     }
 
 
@@ -47,6 +53,11 @@ class Directory{
     public function getUserRootDir()
     {
         return $this->getUploadRootDir().$this->getUserId();
+    }
+
+    public function setUserRootDir($userRootDir)
+    {
+        $this->userRootDir = $userRootDir;
     }
 }
 

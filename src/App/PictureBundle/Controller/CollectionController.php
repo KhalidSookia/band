@@ -29,7 +29,8 @@ class CollectionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AppPictureBundle:Collection')->findAll();
+        $user = $this->getUser();
+        $entities = $em->getRepository('AppPictureBundle:Collection')->findByUser($user);
 
         return array(
             'entities' => $entities,

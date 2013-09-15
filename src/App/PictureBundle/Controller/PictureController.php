@@ -75,10 +75,13 @@ class PictureController extends Controller
     */
     private function createCreateForm(Picture $entity)
     {
-        $form = $this->createForm(new PictureType(), $entity, array(
-            'action' => $this->generateUrl('picture_create'),
-            'method' => 'POST',
-        ));
+        $securityContext = $this->container->get('security.context');
+        $form_ = $this->createForm(
+            new PictureType($securityContext), 
+            $entity, 
+            array('action' => $this->generateUrl('picture_create'), 'method' => 'POST',)
+
+            );
 
         $form->add('submit', 'submit', array('label' => 'Create'));
 

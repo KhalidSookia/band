@@ -80,9 +80,7 @@ class PictureController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'))->add('collection', 'entity', array(
-                'class' => 'AppPictureBundle:Collection',
-                'property' => 'name'));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }

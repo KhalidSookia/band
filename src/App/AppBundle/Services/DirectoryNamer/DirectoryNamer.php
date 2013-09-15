@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BandBundle\Services\DirectoryNamer;
+namespace App\AppBundle\Services\DirectoryNamer;
 
 use App\UserBundle\Entity\User;
 

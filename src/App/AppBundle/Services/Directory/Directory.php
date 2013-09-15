@@ -5,6 +5,9 @@ namespace App\AppBundle\Services\Directory;
 use App\UserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+*/
+
 class Directory{
     
     private $userId;
@@ -31,7 +34,7 @@ class Directory{
      */
     public function getUserId()
     {
-        return $this->context->getUser();
+        return $this->context->getToken()->getUser()->getId();
     }
 
 

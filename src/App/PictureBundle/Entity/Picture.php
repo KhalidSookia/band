@@ -20,6 +20,7 @@ class Picture extends Upload
     /**
     * @ORM\ManyToOne(targetEntity="App\PictureBundle\Entity\Collection", cascade={"persist"})
     */
+    
     private $collection;
 
     /**

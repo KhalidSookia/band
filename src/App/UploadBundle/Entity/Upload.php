@@ -11,14 +11,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Upload
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\UploadBundle\Entity\UploadRepository")
+ * @ORM\MappedSuperclass
  *
  * @ORM\HasLifecycleCallbacks
  *
  * @Gedmo\Uploadable(pathMethod="getUserRootDir", filenameGenerator="SHA1", allowOverwrite=true, appendNumber=true)
  */
-class Upload extends Directory
+abstract class Upload extends Directory
 {
     /**
      * @var integer
@@ -205,10 +204,12 @@ class Upload extends Directory
             $this->extension = $this->file->guessExtension();
             $this->originalName = $this->file->getClientOriginalName();
             $this->path = $this->getUserRootDir();
-
         }
     }
 
+    /**
+    * @ORM\PostPersist()
+    */
     public function upload(){
         if(null === $this->file){
             return;

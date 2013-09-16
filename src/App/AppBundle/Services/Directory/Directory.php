@@ -4,18 +4,18 @@ namespace App\AppBundle\Services\Directory;
 
 use App\UserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
-*/
-
-class Directory{
+ * Directory class
+ */
+abstract class Directory{
     
     private $userId;
-    protected $context;
+    protected $securityContext;
 
-    public function __construct($context){
-
-        $this->context = $context;
+    public function __construct(SecurityContext $securityContext){
+        $this->securityContext = $securityContext;
 
         $filesystem = new Filesystem();
         $folder = $this->getUserRootDir();
@@ -34,7 +34,7 @@ class Directory{
      */
     public function getUserId()
     {
-        return $this->context->getToken()->getUser()->getId();
+        return $this->securityContext->getToken()->getUser()->getId();
     }
 
 

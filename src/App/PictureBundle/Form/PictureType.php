@@ -29,8 +29,7 @@ class PictureType extends AbstractType
             throw new \LogicException(
                 'The FriendMessageFormType cannot be used without an authenticated user!'
             );
-        }
-
+        }else{
         $builder
             ->add('file')
             ->add('collection', 'entity', array(
@@ -42,7 +41,7 @@ class PictureType extends AbstractType
                         ->setParameter('user', $user);
                 },
                 ));
-        
+        }
     }
     
     /**

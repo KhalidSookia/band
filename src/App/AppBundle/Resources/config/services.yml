@@ -1,2 +1,8 @@
 parameters:
 #    app_app.example.class: App\AppBundle\Example
+
+services:
+   app_app_directory:
+        class: App\AppBundle\Services\Directory\Directory
+        arguments: [@security.context, $user_id]
+        scope: request

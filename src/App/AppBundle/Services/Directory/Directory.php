@@ -12,10 +12,10 @@ use Symfony\Component\Security\Core\SecurityContext;
 abstract class Directory{
     
     private $userId;
-    protected $securityContext;
+    protected $context;
 
-    public function __construct(SecurityContext $securityContext){
-        $this->securityContext = $securityContext;
+    public function __construct($context){
+        $this->context = $context;
 
         $filesystem = new Filesystem();
         $folder = $this->getUserRootDir();
@@ -34,7 +34,7 @@ abstract class Directory{
      */
     public function getUserId()
     {
-        return $this->securityContext->getToken()->getUser()->getId();
+        return $this->context->getToken()->getUser()->getId();
     }
 
 
